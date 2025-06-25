@@ -1,0 +1,14 @@
+version: "3.8"
+
+services:
+  detector-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: circle-detector
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./app/data:/app/app/data
+      - ./app/storage:/app/app/storage
+    restart: always

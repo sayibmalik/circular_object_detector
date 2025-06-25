@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Image Grid from API</title>
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  />
+  <style>
+    img {
+      width: 100%;
+      height: auto;
+      margin-bottom: 15px;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container mt-4">
+    <div class="row" id="image-grid"></div>
+  </div>
+
+  <script>
+    const API_URL = "http://0.0.0.0:8000/images/";
+    const BASE_IMAGE_PATH = "http://0.0.0.0:8000/static/"; // Adjust if needed
+
+    async function fetchImages() {
+      try {
+        const response = await fetch(API_URL);
+        const data = await response.json();
+        return data;
+      } catch (error) {
+        console.error("Failed to load images:", error);
+        return [];
+      }
+    }
+
+    async function renderImages() {
+      const container = document.getElementById("image-grid");
+      const images = await fetchImages();
+      console.log(images)
+      for (let col = 0; col < images.count; col++) {
+        const colDiv = document.createElement("div");
+        colDiv.className = "col-md-6"; // 3 equal columns
+          const img = document.createElement("img");
+          img.src = BASE_IMAGE_PATH + "/coin-dataset/" + images.images[col];
+          img.alt = `Image ${col + 1}`;
+          colDiv.appendChild(img);
+        container.appendChild(colDiv);
+
+
+        const colDiv1 = document.createElement("div");
+        colDiv1.className = "col-md-6"; // 3 equal columns
+          const img1 = document.createElement("img");
+          img1.src = BASE_IMAGE_PATH + "/annotated/annotated_" + images.images[col];
+          img1.alt = `Image ${col + 1}`;
+          colDiv1.appendChild(img1);
+        container.appendChild(colDiv1);
+
+        }
+
+      }
+
+    renderImages();
+  </script>
+</body>
+</html>
